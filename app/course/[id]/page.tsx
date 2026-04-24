@@ -1,3 +1,7 @@
+export const dynamic = 'force-dynamic';
+
+import ...
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
   BarChart3,
