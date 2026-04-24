@@ -178,23 +178,21 @@ export default async function CourseDetailPage({
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-  <div className="text-sm font-medium text-slate-700">公式シラバス</div>
-
-  {hasSyllabusUrl ? (
-    <a
-      href={course.syllabus_url}
-      target="_blank"
-      rel="noreferrer"
-      className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold !text-white no-underline transition hover:bg-slate-800 hover:!text-white visited:!text-white"
-    >
-      公式シラバスを見る
-    </a>
-  ) : (
-    <div className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-slate-200 px-4 py-3 text-sm font-medium text-slate-500">
-      シラバスURL準備中
-    </div>
-  )}
-</section>
+          {hasSyllabusUrl ? (
+            <a
+              href={course.syllabus_url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold !text-white no-underline transition hover:bg-slate-800 hover:!text-white visited:!text-white"
+            >
+              公式シラバスを見る
+            </a>
+          ) : (
+            <div className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-200 px-4 py-3 text-sm font-medium text-slate-500">
+              シラバスURL準備中
+            </div>
+          )}
+        </section>
       </aside>
     </div>
   );
