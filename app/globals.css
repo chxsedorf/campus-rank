@@ -94,3 +94,49 @@ textarea[class~="placeholder:text-slate-600"]::placeholder {
   color: #475569 !important;
   opacity: 1 !important;
 }
+/* =========================================
+   Desktop readability patch
+   PC表示だけ文字を少し太く・少し濃くする
+   スマホ表示はそのまま
+   ========================================= */
+@media (min-width: 1024px) {
+  /* 薄い補助文字 */
+  [class~="text-slate-500"] {
+    color: #334155 !important; /* slate-700 */
+    font-weight: 500 !important;
+  }
+
+  [class~="text-slate-600"] {
+    color: #334155 !important; /* slate-700 */
+    font-weight: 500 !important;
+  }
+
+  /* 小さめ文字は特に見づらいので少し強める */
+  [class~="text-xs"][class*="text-slate-"],
+  [class~="text-sm"][class*="text-slate-"] {
+    font-weight: 500 !important;
+  }
+
+  /* 本文系で薄く見えやすいもの */
+  p[class*="text-slate-"],
+  li[class*="text-slate-"],
+  span[class*="text-slate-"],
+  div[class*="text-slate-"] {
+    text-rendering: optimizeLegibility;
+  }
+
+  /* placeholder も少し濃く */
+  input[class~="placeholder:text-slate-400"]::placeholder,
+  textarea[class~="placeholder:text-slate-400"]::placeholder {
+    color: #64748b !important; /* slate-500 */
+    opacity: 1 !important;
+  }
+
+  input[class~="placeholder:text-slate-500"]::placeholder,
+  textarea[class~="placeholder:text-slate-500"]::placeholder,
+  input[class~="placeholder:text-slate-600"]::placeholder,
+  textarea[class~="placeholder:text-slate-600"]::placeholder {
+    color: #475569 !important; /* slate-600 */
+    opacity: 1 !important;
+  }
+}
