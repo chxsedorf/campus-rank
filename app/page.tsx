@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import Link from 'next/link';
-import { ArrowRight, BookOpen, Search, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BookOpen, MessageSquare, Search, ShieldCheck } from 'lucide-react';
 import { getCourses } from '@/lib/course-service';
 
 export default async function HomePage() {
@@ -26,26 +26,24 @@ export default async function HomePage() {
           </div>
 
           <h1 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-            履修登録の前に、
-            <br />
-            必要な情報をひと目で。
+            履修前に、知りたいことをすぐ確認
           </h1>
 
           <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-700 sm:text-base">
-            Campus Rank は、公開されている授業情報を整理し、学生の感想を数値評価とともに見やすくまとめた履修支援サイトです。
-            教員個人への攻撃ではなく、授業内容・課題量・難易度・わかりやすさなど、履修判断に役立つ情報を中心に掲載します。
+            授業情報や口コミを見やすく整理し、履修登録前に比較しやすくすることを目的とした授業情報サイトです。
+            授業選びで迷ったときに、必要な情報をすぐ確認できる形を目指しています。
           </p>
 
           <form
             action="/courses"
             method="get"
-            className="mt-8 grid gap-4 lg:grid-cols-[1.8fr_1fr_1fr_auto]"
+            className="mt-8 grid gap-4 lg:grid-cols-[1.8fr_1fr_1fr_auto] lg:items-end"
           >
             <div>
-              <label htmlFor="home-q" className="sr-only">
-                授業名・教員名・キーワード
+              <label htmlFor="home-q" className="mb-2 block text-sm font-medium text-slate-700">
+                キーワード
               </label>
-              <div className="flex items-center rounded-2xl border border-slate-200 bg-white px-4 py-3">
+              <div className="flex h-[52px] items-center rounded-2xl border border-slate-300 bg-white px-4">
                 <Search className="h-4 w-4 text-slate-500" />
                 <input
                   id="home-q"
@@ -65,7 +63,7 @@ export default async function HomePage() {
                 id="home-faculty"
                 name="faculty"
                 defaultValue=""
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900"
+                className="h-[52px] w-full rounded-2xl border border-slate-300 bg-white px-4 text-sm text-slate-900"
               >
                 <option value="">すべて</option>
                 {faculties.map((faculty) => (
@@ -84,7 +82,7 @@ export default async function HomePage() {
                 id="home-semester"
                 name="semester"
                 defaultValue=""
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900"
+                className="h-[52px] w-full rounded-2xl border border-slate-300 bg-white px-4 text-sm text-slate-900"
               >
                 <option value="">すべて</option>
                 {semesters.map((semester) => (
@@ -95,10 +93,10 @@ export default async function HomePage() {
               </select>
             </div>
 
-            <div className="flex items-end">
+            <div className="flex gap-3">
               <button
                 type="submit"
-                className="inline-flex h-[52px] w-full items-center justify-center rounded-2xl bg-slate-900 px-6 text-sm font-medium text-white transition hover:bg-slate-800"
+                className="inline-flex h-[52px] items-center justify-center rounded-2xl bg-slate-900 px-6 text-sm font-medium text-white transition hover:bg-slate-800"
               >
                 授業を探す
               </button>
@@ -109,28 +107,27 @@ export default async function HomePage() {
             <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
               <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <BookOpen className="h-4 w-4" />
-                掲載授業
+                掲載授業数
               </div>
               <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
-                {courses.length}件
-              </div>
-            </div>
-
-            <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
-              <div className="text-sm font-medium text-slate-700">口コミ</div>
-              <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
-                順次追加中
+                {courses.length}
               </div>
             </div>
 
             <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
               <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                <MessageSquare className="h-4 w-4" />
+                公開口コミ数
+              </div>
+              <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">0</div>
+            </div>
+
+            <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+              <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <ShieldCheck className="h-4 w-4" />
-                安全設計
+                対応状況
               </div>
-              <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
-                ガイド付き
-              </div>
+              <div className="mt-3 text-base font-medium text-slate-900">学部別に順次拡張中</div>
             </div>
           </div>
         </div>
@@ -170,9 +167,9 @@ export default async function HomePage() {
         <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <div className="text-sm text-slate-500">人気ランキング</div>
+              <div className="text-sm text-slate-500">注目の授業</div>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
-                学生がよく見る授業
+                よく見られている授業
               </h2>
             </div>
 
@@ -180,7 +177,7 @@ export default async function HomePage() {
               href="/courses"
               className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
             >
-              もっと見る
+              すべて見る
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
