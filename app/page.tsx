@@ -21,16 +21,15 @@ export default async function HomePage() {
     <div className="space-y-10">
       <section className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
         <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700">
-          大学の授業選びを、もっと見やすく安全に
+          Campus Rank
         </div>
 
         <h1 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-          履修前に、知りたいことをすぐ確認
+          授業選びを、もっとクリアに。
         </h1>
 
         <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-700 sm:text-base">
-          授業情報や口コミを見やすく整理し、履修登録前に比較しやすくすることを目的とした授業情報サイトです。
-          授業選びで迷ったときに、必要な情報をすぐ確認できる形を目指しています。
+          必要な授業情報を、ひと目で。
         </p>
 
         <form
