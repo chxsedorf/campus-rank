@@ -28,6 +28,7 @@ export async function getCourses(params?: {
   const { data, error } = await query;
 
   if (error) {
+    console.error('Supabase getCourses error:', error);
     throw new Error(error.message);
   }
 
@@ -42,6 +43,7 @@ export async function getCourseById(id: number) {
     .single();
 
   if (error) {
+    console.error('Supabase getCourseById error:', error);
     throw new Error(error.message);
   }
 
@@ -57,21 +59,9 @@ export async function getPublishedReviewsByCourseId(courseId: number) {
     .order('created_at', { ascending: false });
 
   if (error) {
+    console.error('Supabase getPublishedReviewsByCourseId error:', error);
     throw new Error(error.message);
   }
 
   return (data ?? []) as ReviewRow[];
-}
-
-export async function getPublishedReviewCount() {
-  const { count, error } = await supabase
-    .from('reviews')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'published');
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return count ?? 0;
 }
