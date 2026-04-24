@@ -44,10 +44,7 @@ export default async function CourseDetailPage({
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex flex-wrap items-center gap-2">
             {course.tags.map((tag: string) => (
-              <span
-                key={tag}
-                className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
-              >
+              <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
                 {tag}
               </span>
             ))}
