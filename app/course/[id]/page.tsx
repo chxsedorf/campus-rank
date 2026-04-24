@@ -196,4 +196,6 @@ export default async function CourseDetailPage({
       </aside>
     </div>
   );
-}
+}git add app/course/[id]/page.tsx
+git commit -m "Remove syllabus card heading"
+git push origin main
