@@ -1,27 +1,29 @@
-export const dynamic = 'force-dynamic';
-
-import { notFound } from 'next/navigation';
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import {
   BarChart3,
+  BookOpen,
+  CalendarDays,
   FileText,
   Info,
   MessageSquare,
   PencilLine,
   Scale,
   Users,
-  CalendarDays,
-  BookOpen,
-} from 'lucide-react';
-import { MetricCard, ReviewCard, ScoreBar, SectionHeader } from '@/components/ui';
-import { ReviewForm } from '@/components/review-form';
-import { getCourseById, getPublishedReviewsByCourseId } from '@/lib/course-service';
+} from "lucide-react";
+import { MetricCard, ReviewCard, ScoreBar, SectionHeader } from "@/components/ui";
+import { ReviewForm } from "@/components/review-form";
+import { getCourseById, getPublishedReviewsByCourseId } from "@/lib/course-service";
+
+export const dynamic = "force-dynamic";
 
 export default async function CourseDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const courseId = Number(params.id);
+  const { id } = await params;
+  const courseId = Number(id);
 
   if (Number.isNaN(courseId)) {
     notFound();
@@ -38,11 +40,6 @@ export default async function CourseDetailPage({
   }
 
   const hasReviews = reviews.length > 0;
-
-  const hasSyllabusUrl =
-    course.syllabus_url &&
-    course.syllabus_url !== '#' &&
-    course.syllabus_url.trim() !== '';
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
@@ -86,15 +83,36 @@ export default async function CourseDetailPage({
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <SectionHeader icon={<FileText className="h-5 w-5" />} title="授業の概要" />
+          <p className="mt-5 text-sm leading-8 text-slate-700">
+            {course.summary}
+          </p>
+        </section>
+
+        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <SectionHeader icon={<Info className="h-5 w-5" />} title="掲載情報について" />
+          <p className="mt-5 text-sm leading-8 text-slate-700">
+            このページの授業名・担当教員・開講時期・時限などは、公開されている時間割資料や公式情報をもとに整理しています。
+            年度や学期によって内容が変更される可能性があるため、履修登録前には必ず大学公式の最新シラバス・履修案内を確認してください。
+          </p>
+        </section>
+
+        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <SectionHeader icon={<BarChart3 className="h-5 w-5" />} title="数値評価サマリー" />
           <div className="mt-6 space-y-5">
-            <ScoreBar label="わかりやすさ" value={hasReviews ? Number(course.clarity) : 0} />
-            <ScoreBar label="単位の取りやすさ" value={hasReviews ? Number(course.easiness) : 0} />
-            <ScoreBar label="課題量" value={hasReviews ? Number(course.assignments) : 0} />
-            <ScoreBar label="テスト難易度" value={hasReviews ? Number(course.difficulty) : 0} />
-            <ScoreBar label="出席の厳しさ" value={hasReviews ? Number(course.attendance) : 0} />
-            <ScoreBar label="おすすめ度" value={hasReviews ? Number(course.recommend) : 0} />
+            <ScoreBar label="わかりやすさ" value={hasReviews ? Number(course.clarity) : null} />
+            <ScoreBar label="単位の取りやすさ" value={hasReviews ? Number(course.easiness) : null} />
+            <ScoreBar label="課題量" value={hasReviews ? Number(course.assignments) : null} />
+            <ScoreBar label="テスト難易度" value={hasReviews ? Number(course.difficulty) : null} />
+            <ScoreBar label="出席の厳しさ" value={hasReviews ? Number(course.attendance) : null} />
+            <ScoreBar label="おすすめ度" value={hasReviews ? Number(course.recommend) : null} />
           </div>
+
+          {!hasReviews ? (
+            <p className="mt-6 text-sm text-slate-700">
+              評価がまだありません。
+            </p>
+          ) : null}
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
@@ -111,14 +129,14 @@ export default async function CourseDetailPage({
                   review={{
                     id: review.id,
                     author: review.author,
-                    date: new Date(review.created_at).toLocaleDateString('ja-JP'),
+                    date: new Date(review.created_at).toLocaleDateString("ja-JP"),
                     text: review.body,
                   }}
                 />
               ))
             ) : (
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm text-slate-600">
-                まだ口コミがありません。
+              <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+                <p className="text-sm text-slate-700">まだ口コミはありません。</p>
               </div>
             )}
           </div>
@@ -132,21 +150,9 @@ export default async function CourseDetailPage({
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <SectionHeader icon={<Scale className="h-5 w-5" />} title="参考・免責情報" />
           <div className="mt-5 rounded-2xl bg-slate-50 p-5 text-sm leading-7 text-slate-700">
-            このページの一部は公開されている授業情報をもとに整理しています。正式な情報は必ず大学公式のシラバス・履修要項をご確認ください。
+            このページの掲載内容は、公開情報や投稿された口コミをもとに整理した参考情報です。
+            正式な授業内容、評価方法、履修条件、開講状況は、必ず大学公式のシラバス・履修要項・時間割資料をご確認ください。
           </div>
-        </section>
-
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<Info className="h-5 w-5" />} title="掲載情報について" />
-          <div className="mt-5 rounded-2xl bg-slate-50 p-4 text-sm leading-7 text-slate-700">
-            このページの授業名・担当教員・開講時期・時限などは、公開されている時間割資料や公式情報をもとに整理しています。
-            年度や学期によって内容が変更される可能性があるため、履修登録前には必ず大学公式の最新シラバス・履修案内を確認してください。
-          </div>
-        </section>
-
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<FileText className="h-5 w-5" />} title="授業の概要" />
-          <p className="mt-5 text-sm leading-8 text-slate-700">{course.summary}</p>
         </section>
       </div>
 
@@ -154,34 +160,26 @@ export default async function CourseDetailPage({
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
           <div className="text-sm font-medium text-slate-700">この授業の印象</div>
           <div className="mt-5 space-y-3 text-sm text-slate-700">
-            <div>人気度: {hasReviews ? Number(course.recommend).toFixed(1) : '-'}</div>
-            <div>やさしさ: {hasReviews ? Number(course.easiness).toFixed(1) : '-'}</div>
+            <div>人気度: {hasReviews ? Number(course.recommend).toFixed(1) : "-"}</div>
+            <div>やさしさ: {hasReviews ? Number(course.easiness).toFixed(1) : "-"}</div>
             <div>
-              実用性:{' '}
+              実用性:{" "}
               {hasReviews
                 ? ((Number(course.clarity) + Number(course.recommend)) / 2).toFixed(1)
-                : '-'}
+                : "-"}
             </div>
           </div>
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
           <div className="text-sm font-medium text-slate-700">公式シラバス</div>
-
-          {hasSyllabusUrl ? (
-            <a
-              href={course.syllabus_url}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-medium text-white no-underline transition hover:bg-slate-800"
-            >
-              公式シラバスを見る
-            </a>
-          ) : (
-            <div className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-slate-200 px-4 py-3 text-sm font-medium text-slate-500">
-              シラバスURL準備中
-            </div>
-          )}
+          <Link
+            href={course.syllabus_url || "#"}
+            target="_blank"
+            className="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
+          >
+            シラバスを確認する
+          </Link>
         </section>
       </aside>
     </div>
