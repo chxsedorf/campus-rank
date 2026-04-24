@@ -19,213 +19,163 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-10">
-      <section className="grid gap-6 xl:grid-cols-[1fr_420px]">
-        <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
-          <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700">
-            大学の授業選びを、もっと見やすく安全に
-          </div>
-
-          <h1 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-            履修前に、知りたいことをすぐ確認
-          </h1>
-
-          <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-700 sm:text-base">
-            授業情報や口コミを見やすく整理し、履修登録前に比較しやすくすることを目的とした授業情報サイトです。
-            授業選びで迷ったときに、必要な情報をすぐ確認できる形を目指しています。
-          </p>
-
-          <form
-            action="/courses"
-            method="get"
-            className="mt-8 grid gap-4 lg:grid-cols-[1.8fr_1fr_1fr_auto] lg:items-end"
-          >
-            <div>
-              <label htmlFor="home-q" className="mb-2 block text-sm font-medium text-slate-700">
-                キーワード
-              </label>
-              <div className="flex h-[52px] items-center rounded-2xl border border-slate-300 bg-white px-4">
-                <Search className="h-4 w-4 text-slate-500" />
-                <input
-                  id="home-q"
-                  name="q"
-                  type="text"
-                  placeholder="授業名・教員名・キーワードで検索"
-                  className="ml-3 w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="home-faculty" className="mb-2 block text-sm font-medium text-slate-700">
-                学部
-              </label>
-              <select
-                id="home-faculty"
-                name="faculty"
-                defaultValue=""
-                className="h-[52px] w-full rounded-2xl border border-slate-300 bg-white px-4 text-sm text-slate-900"
-              >
-                <option value="">すべて</option>
-                {faculties.map((faculty) => (
-                  <option key={faculty} value={faculty}>
-                    {faculty}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="home-semester" className="mb-2 block text-sm font-medium text-slate-700">
-                学期
-              </label>
-              <select
-                id="home-semester"
-                name="semester"
-                defaultValue=""
-                className="h-[52px] w-full rounded-2xl border border-slate-300 bg-white px-4 text-sm text-slate-900"
-              >
-                <option value="">すべて</option>
-                {semesters.map((semester) => (
-                  <option key={semester} value={semester}>
-                    {semester}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                type="submit"
-                className="inline-flex h-[52px] items-center justify-center rounded-2xl bg-slate-900 px-6 text-sm font-medium text-white transition hover:bg-slate-800"
-              >
-                授業を探す
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
-              <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
-                <BookOpen className="h-4 w-4" />
-                掲載授業数
-              </div>
-              <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
-                {courses.length}
-              </div>
-            </div>
-
-            <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
-              <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
-                <MessageSquare className="h-4 w-4" />
-                公開口コミ数
-              </div>
-              <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">0</div>
-            </div>
-
-            <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
-              <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
-                <ShieldCheck className="h-4 w-4" />
-                対応状況
-              </div>
-              <div className="mt-3 text-base font-medium text-slate-900">学部別に順次拡張中</div>
-            </div>
-          </div>
+      <section className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
+        <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700">
+          大学の授業選びを、もっと見やすく安全に
         </div>
 
-        <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <div className="text-sm text-slate-500">おすすめの使い方</div>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">
-            このサイトでできること
-          </h2>
+        <h1 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+          履修前に、知りたいことをすぐ確認
+        </h1>
 
-          <div className="mt-6 space-y-4">
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <div className="text-sm font-medium text-slate-800">授業を探す</div>
-              <div className="mt-2 text-sm leading-7 text-slate-700">
-                授業名・教員名・キーワードから授業を探せます。
-              </div>
-            </div>
+        <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-700 sm:text-base">
+          授業情報や口コミを見やすく整理し、履修登録前に比較しやすくすることを目的とした授業情報サイトです。
+          授業選びで迷ったときに、必要な情報をすぐ確認できる形を目指しています。
+        </p>
 
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <div className="text-sm font-medium text-slate-800">傾向を確認する</div>
-              <div className="mt-2 text-sm leading-7 text-slate-700">
-                わかりやすさ、課題量、テスト難易度、出席の厳しさなどを確認できます。
-              </div>
+        <form
+          action="/courses"
+          method="get"
+          className="mt-8 grid gap-4 lg:grid-cols-[1.8fr_1fr_1fr_auto] lg:items-end"
+        >
+          <div>
+            <label htmlFor="home-q" className="mb-2 block text-sm font-medium text-slate-700">
+              キーワード
+            </label>
+            <div className="flex h-[52px] items-center rounded-2xl border border-slate-300 bg-white px-4">
+              <Search className="h-4 w-4 text-slate-500" />
+              <input
+                id="home-q"
+                name="q"
+                type="text"
+                placeholder="授業名・教員名・キーワードで検索"
+                className="ml-3 w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-500"
+              />
             </div>
+          </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <div className="text-sm font-medium text-slate-800">口コミを投稿する</div>
-              <div className="mt-2 text-sm leading-7 text-slate-700">
-                履修した学生の視点から、次に取る人へ役立つ情報を残せます。
-              </div>
+          <div>
+            <label htmlFor="home-faculty" className="mb-2 block text-sm font-medium text-slate-700">
+              学部
+            </label>
+            <select
+              id="home-faculty"
+              name="faculty"
+              defaultValue=""
+              className="h-[52px] w-full rounded-2xl border border-slate-300 bg-white px-4 text-sm text-slate-900"
+            >
+              <option value="">すべて</option>
+              {faculties.map((faculty) => (
+                <option key={faculty} value={faculty}>
+                  {faculty}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="home-semester" className="mb-2 block text-sm font-medium text-slate-700">
+              学期
+            </label>
+            <select
+              id="home-semester"
+              name="semester"
+              defaultValue=""
+              className="h-[52px] w-full rounded-2xl border border-slate-300 bg-white px-4 text-sm text-slate-900"
+            >
+              <option value="">すべて</option>
+              {semesters.map((semester) => (
+                <option key={semester} value={semester}>
+                  {semester}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              type="submit"
+              className="inline-flex h-[52px] items-center justify-center rounded-2xl bg-slate-900 px-6 text-sm font-medium text-white transition hover:bg-slate-800"
+            >
+              授業を探す
+            </button>
+          </div>
+        </form>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+            <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <BookOpen className="h-4 w-4" />
+              掲載授業数
             </div>
+            <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+              {courses.length}
+            </div>
+          </div>
+
+          <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+            <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <MessageSquare className="h-4 w-4" />
+              公開口コミ数
+            </div>
+            <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">0</div>
+          </div>
+
+          <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+            <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <ShieldCheck className="h-4 w-4" />
+              対応状況
+            </div>
+            <div className="mt-3 text-base font-medium text-slate-900">学部別に順次拡張中</div>
           </div>
         </div>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1fr_420px]">
-        <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <div className="text-sm text-slate-500">注目の授業</div>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
-                よく見られている授業
-              </h2>
-            </div>
-
-            <Link
-              href="/courses"
-              className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
-            >
-              すべて見る
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+      <section className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <div className="text-sm text-slate-500">注目の授業</div>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+              よく見られている授業
+            </h2>
           </div>
 
-          <div className="mt-6 grid gap-4">
-            {featuredCourses.map((course) => (
-              <Link
-                key={course.id}
-                href={`/course/${course.id}`}
-                className="rounded-[24px] border border-slate-200 bg-slate-50 p-5 transition hover:border-slate-300 hover:bg-white"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <div className="text-lg font-semibold text-slate-900">{course.name}</div>
-                    <div className="mt-1 text-sm text-slate-700">
-                      {course.teacher} / {course.faculty}
-                    </div>
-                    <div className="mt-1 text-sm text-slate-600">
-                      {course.semester} ・ {course.period}
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <div className="text-xs text-slate-500">おすすめ度</div>
-                    <div className="mt-1 text-lg font-semibold text-slate-900">
-                      {Number(course.recommend) > 0 ? Number(course.recommend).toFixed(1) : 'ー'}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <Link
+            href="/courses"
+            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+          >
+            すべて見る
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
-        <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <div className="text-sm text-slate-500">このサイトについて</div>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
-            授業選びを、少しだけ楽にする
-          </h2>
+        <div className="mt-6 grid gap-4">
+          {featuredCourses.map((course) => (
+            <Link
+              key={course.id}
+              href={`/course/${course.id}`}
+              className="rounded-[24px] border border-slate-200 bg-slate-50 p-5 transition hover:border-slate-300 hover:bg-white"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="text-lg font-semibold text-slate-900">{course.name}</div>
+                  <div className="mt-1 text-sm text-slate-700">
+                    {course.teacher} / {course.faculty}
+                  </div>
+                  <div className="mt-1 text-sm text-slate-600">
+                    {course.semester} ・ {course.period}
+                  </div>
+                </div>
 
-          <div className="mt-5 space-y-4 text-sm leading-8 text-slate-700">
-            <p>
-              公開されている時間割情報や授業情報をもとに、履修登録前に見返しやすい形で整理しています。
-            </p>
-            <p>
-              口コミはあくまで参考情報です。最終的な判断は必ず大学公式のシラバスや履修案内を確認してください。
-            </p>
-          </div>
+                <div className="text-right">
+                  <div className="text-xs text-slate-500">おすすめ度</div>
+                  <div className="mt-1 text-lg font-semibold text-slate-900">
+                    {Number(course.recommend) > 0 ? Number(course.recommend).toFixed(1) : 'ー'}
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
     </div>
