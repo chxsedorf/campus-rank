@@ -198,6 +198,9 @@ export default async function HomePage() {
                     <div className="mt-1 text-sm text-slate-700">
                       {course.teacher} / {course.faculty}
                     </div>
+                    <div className="mt-1 text-sm text-slate-600">
+                      {course.semester} ・ {course.period}
+                    </div>
                   </div>
 
                   <div className="text-right">
