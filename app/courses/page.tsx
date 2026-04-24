@@ -1,158 +1,186 @@
-import Link from "next/link";
-import {
-  BookOpen,
-  CalendarDays,
-  ClipboardList,
-  GraduationCap,
-  Search,
-  Sparkles,
-  Users,
-} from "lucide-react";
-import { getCourses } from "@/lib/course-service";
+export const dynamic = 'force-dynamic';
 
-export const dynamic = "force-dynamic";
-
-function getText(value: unknown, fallback = "情報なし") {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : fallback;
-}
+import Link from 'next/link';
+import { BookOpen, CalendarDays, Search, Sparkles, Users } from 'lucide-react';
+import { getCourses } from '@/lib/course-service';
 
 export default async function CoursesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    faculty?: string;
+    semester?: string;
+  }>;
 }) {
-  const params = await searchParams;
-  const query = params.q?.toLowerCase() ?? "";
+  const { q = '', faculty = '', semester = '' } = await searchParams;
 
-  const courses = await getCourses();
+  const allCourses = await getCourses();
+  const courses = await getCourses({ q, faculty, semester });
 
-  const filteredCourses = courses.filter((course: any) => {
-    return (
-      course.name.toLowerCase().includes(query) ||
-      course.teacher.toLowerCase().includes(query) ||
-      (course.content_detail ?? "").toLowerCase().includes(query) ||
-      (course.evaluation_detail ?? "").toLowerCase().includes(query)
-    );
-  });
+  const faculties = Array.from(new Set(allCourses.map((course) => course.faculty))).sort((a, b) =>
+    a.localeCompare(b, 'ja')
+  );
+
+  const semesters = Array.from(new Set(allCourses.map((course) => course.semester))).sort((a, b) =>
+    a.localeCompare(b, 'ja')
+  );
 
   return (
     <div className="space-y-8">
-      {/* ヘッダー */}
       <section className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <div className="flex items-center gap-2 text-sm font-medium text-sky-700">
           <Sparkles className="h-4 w-4" />
           授業を探す
         </div>
 
-        <h1 className="mt-3 text-3xl font-semibold text-slate-900 sm:text-4xl">
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
           授業一覧
         </h1>
 
-        {/* 検索 */}
-        <form className="mt-6 flex items-center gap-3">
-          <div className="flex w-full items-center gap-2 rounded-2xl border px-4 py-3">
-            <Search className="h-4 w-4 text-slate-400" />
-            <input
-              name="q"
-              defaultValue={params.q}
-              placeholder="授業名・先生・内容で検索"
-              className="w-full text-sm outline-none"
-            />
+        <p className="mt-3 text-sm leading-7 text-slate-700">
+          キーワード検索に加えて、学部と学期でも絞り込めます。
+        </p>
+
+        <form action="/courses" method="get" className="mt-6 grid gap-4 lg:grid-cols-[1.8fr_1fr_1fr_auto]">
+          <div>
+            <label htmlFor="courses-q" className="sr-only">
+              授業名・先生・内容で検索
+            </label>
+            <div className="flex items-center rounded-2xl border border-slate-300 bg-white px-4 py-3">
+              <Search className="h-4 w-4 text-slate-500" />
+              <input
+                id="courses-q"
+                name="q"
+                type="text"
+                defaultValue={q}
+                placeholder="授業名・先生・内容で検索"
+                className="ml-3 w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-500"
+              />
+            </div>
           </div>
 
-          <button className="rounded-2xl bg-slate-900 px-5 py-3 text-sm text-white">
-            検索
-          </button>
+          <div>
+            <label htmlFor="courses-faculty" className="mb-2 block text-sm font-medium text-slate-700">
+              学部
+            </label>
+            <select
+              id="courses-faculty"
+              name="faculty"
+              defaultValue={faculty}
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900"
+            >
+              <option value="">すべて</option>
+              {faculties.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="courses-semester" className="mb-2 block text-sm font-medium text-slate-700">
+              学期
+            </label>
+            <select
+              id="courses-semester"
+              name="semester"
+              defaultValue={semester}
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900"
+            >
+              <option value="">すべて</option>
+              {semesters.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex items-end gap-3">
+            <button
+              type="submit"
+              className="inline-flex h-[52px] items-center justify-center rounded-2xl bg-slate-900 px-6 text-sm font-medium text-white transition hover:bg-slate-800"
+            >
+              検索
+            </button>
+
+            <Link
+              href="/courses"
+              className="inline-flex h-[52px] items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+            >
+              解除
+            </Link>
+          </div>
         </form>
+
+        <div className="mt-5 text-sm text-slate-600">
+          検索結果: <span className="font-semibold text-slate-900">{courses.length}</span> 件
+        </div>
       </section>
 
-      {/* 授業カード一覧 */}
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {filteredCourses.map((course: any) => {
-          const content = getText(course.content_detail, course.summary);
-          const evaluation = getText(course.evaluation_detail);
-          const style = getText(course.class_style);
-
-          return (
+      {courses.length > 0 ? (
+        <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {courses.map((course) => (
             <Link
               key={course.id}
               href={`/course/${course.id}`}
-              className="group rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md"
+              className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
             >
-              {/* タグ */}
-              <div className="flex flex-wrap gap-2 text-xs">
-                {course.tags?.slice(0, 3).map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="rounded-full bg-slate-100 px-2 py-1 text-slate-600"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+              <h2 className="text-xl font-semibold tracking-tight text-slate-900">{course.name}</h2>
 
-              {/* タイトル */}
-              <h2 className="mt-3 text-lg font-semibold text-slate-900 group-hover:text-sky-600">
-                {course.name}
-              </h2>
-
-              {/* 基本情報 */}
-              <div className="mt-2 space-y-1 text-xs text-slate-600">
-                <div className="flex items-center gap-2">
-                  <Users className="h-3 w-3" />
+              <div className="mt-4 space-y-2 text-sm text-slate-700">
+                <div className="inline-flex items-center gap-2">
+                  <Users className="h-4 w-4" />
                   {course.teacher}
                 </div>
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="h-3 w-3" />
+
+                <div className="inline-flex items-center gap-2">
+                  <CalendarDays className="h-4 w-4" />
                   {course.semester} / {course.period}
                 </div>
-                <div className="flex items-center gap-2">
-                  <BookOpen className="h-3 w-3" />
+
+                <div className="inline-flex items-center gap-2">
+                  <BookOpen className="h-4 w-4" />
                   {course.credits}単位
                 </div>
               </div>
 
-              {/* 授業内容 */}
-              <div className="mt-4">
-                <div className="text-xs font-medium text-slate-500">
-                  授業内容
-                </div>
-                <p className="mt-1 line-clamp-2 text-sm text-slate-700">
-                  {content}
-                </p>
+              <div className="mt-5">
+                <div className="text-sm font-medium text-slate-800">授業内容</div>
+                <p className="mt-2 line-clamp-3 text-sm leading-7 text-slate-700">{course.summary}</p>
               </div>
 
-              {/* 評価 */}
-              <div className="mt-4">
-                <div className="flex items-center gap-1 text-xs font-medium text-slate-500">
-                  <ClipboardList className="h-3 w-3" />
-                  評価方法
+              <div className="mt-5 grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <div className="text-slate-500">評価方法</div>
+                  <div className="mt-1 text-slate-800">情報なし</div>
                 </div>
-                <p className="mt-1 line-clamp-2 text-sm text-slate-700">
-                  {evaluation}
-                </p>
-              </div>
 
-              {/* スタイル */}
-              <div className="mt-4">
-                <div className="flex items-center gap-1 text-xs font-medium text-slate-500">
-                  <GraduationCap className="h-3 w-3" />
-                  授業スタイル
+                <div>
+                  <div className="text-slate-500">授業スタイル</div>
+                  <div className="mt-1 text-slate-800">情報なし</div>
                 </div>
-                <p className="mt-1 text-sm text-slate-700">{style}</p>
               </div>
             </Link>
-          );
-        })}
-      </div>
-
-      {/* 空状態 */}
-      {filteredCourses.length === 0 && (
-        <div className="text-center text-sm text-slate-500">
-          該当する授業が見つかりませんでした
-        </div>
+          ))}
+        </section>
+      ) : (
+        <section className="rounded-[32px] border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <div className="text-lg font-semibold text-slate-900">該当する授業が見つかりませんでした</div>
+          <p className="mt-3 text-sm leading-7 text-slate-700">
+            キーワードを短くしたり、学部・学期の条件を解除してもう一度試してください。
+          </p>
+          <div className="mt-5">
+            <Link
+              href="/courses"
+              className="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+            >
+              条件をすべて解除
+            </Link>
+          </div>
+        </section>
       )}
     </div>
   );
