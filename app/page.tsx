@@ -8,7 +8,6 @@ import {
   FileText,
   BarChart3,
   Flag,
-  CheckCircle2,
   ChevronRight,
 } from 'lucide-react';
 import {
@@ -67,76 +66,50 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-8">
-      <section className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
-        <div className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-sm sm:p-10">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-            <Sparkles className="h-3.5 w-3.5" />
-            大学の授業選びを、もっと見やすく安全に
-          </div>
-
-          <h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
-            履修登録の前に、
-            <span className="block text-slate-700">必要な情報をひと目で。</span>
-          </h1>
-
-          <p className="mt-4 max-w-2xl text-base leading-8 text-slate-700 sm:text-base sm:leading-7">
-            Campus Rank は、公開されている授業情報を整理し、学生の感想を数値評価とともに見やすくまとめた履修支援サイトです。
-            教員個人への攻撃ではなく、授業内容・課題量・難易度・わかりやすさなど、履修判断に役立つ情報を中心に掲載します。
-          </p>
-
-          <form
-            action="/courses"
-            className="mt-8 grid gap-3 md:grid-cols-[1.3fr_0.7fr_0.7fr_auto]"
-          >
-            <SearchInput />
-            <SelectField name="faculty" options={faculties} label="学部" />
-            <SelectField name="semester" options={semesters} label="学期" />
-            <button className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-slate-800">
-              授業を探す
-            </button>
-          </form>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            <StatCard
-              icon={<BookOpen className="h-5 w-5" />}
-              label="掲載授業"
-              value={`${courses.length}件`}
-            />
-            <StatCard
-              icon={<MessageSquare className="h-5 w-5" />}
-              label="口コミ"
-              value={`${reviewCount}件`}
-            />
-            <StatCard
-              icon={<ShieldCheck className="h-5 w-5" />}
-              label="安全設計"
-              value="ガイド付き"
-            />
-          </div>
+      <section className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-sm sm:p-10">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+          <Sparkles className="h-3.5 w-3.5" />
+          大学の授業選びを、もっと見やすく安全に
         </div>
 
-        <div className="rounded-[28px] border border-slate-200 bg-gradient-to-br from-slate-900 to-slate-800 p-7 text-white shadow-sm sm:p-8">
-          <div className="flex items-center gap-2 text-sm text-slate-200">
-            <ShieldCheck className="h-4 w-4" />
-            履修前に、知りたいことをすぐ確認
-          </div>
+        <h1 className="max-w-4xl text-3xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+          履修登録の前に、
+          <span className="block text-slate-700">必要な情報をひと目で。</span>
+        </h1>
 
-          <h2 className="mt-4 text-2xl font-semibold tracking-tight text-white">
-            授業選びで迷わないための情報を、まとめて見られる。
-          </h2>
+        <p className="mt-4 max-w-3xl text-base leading-8 text-slate-700 sm:text-base sm:leading-7">
+          Campus Rank は、公開されている授業情報を整理し、学生の感想を数値評価とともに見やすくまとめた履修支援サイトです。
+          教員個人への攻撃ではなく、授業内容・課題量・難易度・わかりやすさなど、履修判断に役立つ情報を中心に掲載します。
+        </p>
 
-          <ul className="mt-6 space-y-3 text-sm leading-7 text-slate-100">
-            {[
-              '授業の特徴、口コミ、課題や難しさの傾向をひと目で確認できます',
-              '気になる授業を比較しながら、自分に合う履修を選びやすくします',
-              'ルールを整えた口コミ設計で、安心して参考にできる情報を集めます',
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-3">
-                <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-emerald-300" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+        <form
+          action="/courses"
+          className="mt-8 grid gap-3 md:grid-cols-[1.3fr_0.7fr_0.7fr_auto]"
+        >
+          <SearchInput />
+          <SelectField name="faculty" options={faculties} label="学部" />
+          <SelectField name="semester" options={semesters} label="学期" />
+          <button className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-slate-800">
+            授業を探す
+          </button>
+        </form>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          <StatCard
+            icon={<BookOpen className="h-5 w-5" />}
+            label="掲載授業"
+            value={`${courses.length}件`}
+          />
+          <StatCard
+            icon={<MessageSquare className="h-5 w-5" />}
+            label="口コミ"
+            value={`${reviewCount}件`}
+          />
+          <StatCard
+            icon={<ShieldCheck className="h-5 w-5" />}
+            label="安全設計"
+            value="ガイド付き"
+          />
         </div>
       </section>
 
