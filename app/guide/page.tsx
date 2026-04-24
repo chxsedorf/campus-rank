@@ -1,15 +1,41 @@
-import Link from 'next/link';
+'use client';
+
 import {
-  ShieldCheck,
-  FileText,
-  PencilLine,
-  Scale,
-  LifeBuoy,
-  ChevronRight,
   BookOpen,
-  MessageSquare,
-  Flag,
+  FileText,
+  LifeBuoy,
+  Scale,
+  ShieldAlert,
 } from 'lucide-react';
+
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+    inline: 'nearest',
+  });
+}
+
+function JumpButton({
+  label,
+  targetId,
+}: {
+  label: string;
+  targetId: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => scrollToSection(targetId)}
+      className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-left text-sm font-medium text-slate-700 transition hover:bg-white"
+    >
+      {label}
+    </button>
+  );
+}
 
 function GuideSection({
   id,
@@ -25,10 +51,10 @@ function GuideSection({
   return (
     <section
       id={id}
-      className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+      className="scroll-mt-32 rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
     >
       <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
           {icon}
         </div>
         <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
@@ -36,7 +62,7 @@ function GuideSection({
         </h2>
       </div>
 
-      <div className="mt-5 space-y-4 text-base leading-8 text-slate-700 sm:text-sm sm:leading-7">
+      <div className="mt-6 space-y-4 text-sm leading-8 text-slate-700">
         {children}
       </div>
     </section>
@@ -46,58 +72,33 @@ function GuideSection({
 export default function GuidePage() {
   return (
     <div className="space-y-6">
-      <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
           <BookOpen className="h-4 w-4" />
           利用ガイド
         </div>
 
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
           Campus Rank の使い方
         </h1>
 
-        <p className="mt-4 max-w-3xl text-base leading-8 text-slate-700 sm:text-sm sm:leading-7">
+        <p className="mt-5 text-sm leading-8 text-slate-700">
           Campus Rank は、授業情報や口コミを見やすく整理し、履修登録前に比較しやすくするためのサイトです。
           このページでは、利用ルール、掲載情報の考え方、投稿時の注意事項、免責事項、サポートの使い方をまとめています。
         </p>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          <a
-            href="#rules"
-            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
-          >
-            利用ルール
-          </a>
-          <a
-            href="#policy"
-            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
-          >
-            掲載情報の考え方
-          </a>
-          <a
-            href="#posting"
-            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
-          >
-            投稿時の注意事項
-          </a>
-          <a
-            href="#disclaimer"
-            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
-          >
-            免責事項
-          </a>
-          <a
-            href="#support"
-            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
-          >
-            サポート
-          </a>
+          <JumpButton label="利用ルール" targetId="rules" />
+          <JumpButton label="掲載情報の考え方" targetId="policy" />
+          <JumpButton label="投稿時の注意事項" targetId="posting" />
+          <JumpButton label="免責事項" targetId="disclaimer" />
+          <JumpButton label="サポート" targetId="support" />
         </div>
       </section>
 
       <GuideSection
         id="rules"
-        icon={<ShieldCheck className="h-5 w-5" />}
+        icon={<ShieldAlert className="h-5 w-5" />}
         title="利用ルール"
       >
         <p>
@@ -120,26 +121,25 @@ export default function GuidePage() {
           掲載されている授業情報は、公開されている情報をもとに整理した要約です。見やすさを重視しているため、公式シラバスの全文転載ではありません。
         </p>
         <ul className="list-disc space-y-2 pl-5">
-          <li>授業名、担当教員、学期、単位数などの基本情報を整理して掲載します。</li>
-          <li>シラバスや時間割は、内容をそのまま転載せず要点をまとめて表示します。</li>
-          <li>正式な履修条件や最新情報は、必ず大学公式の案内を確認してください。</li>
+          <li>授業名、担当教員、開講時期、時限などは公開情報をもとに整理しています。</li>
+          <li>年度や学期によって内容が変更される場合があります。</li>
+          <li>最終的な履修判断は、大学公式のシラバス・履修案内を必ず確認してください。</li>
         </ul>
       </GuideSection>
 
       <GuideSection
         id="posting"
-        icon={<PencilLine className="h-5 w-5" />}
+        icon={<BookOpen className="h-5 w-5" />}
         title="投稿時の注意事項"
       >
         <p>
-          口コミは、履修登録の判断材料として役立つ内容を歓迎しています。読む人が参考にしやすいように、授業内容に沿った投稿をお願いします。
+          口コミは、次に履修する人の参考になる情報として扱います。主観そのものは問題ありませんが、書き方には配慮が必要です。
         </p>
         <ul className="list-disc space-y-2 pl-5">
-          <li>授業の進め方、課題量、試験、予習復習のしやすさなどを書くのがおすすめです。</li>
-          <li>「自分はこう感じた」という主観表現を使うと、断定的になりにくくなります。</li>
-          <li>教員や学生個人に関する攻撃的な表現は禁止です。</li>
-          <li>事実確認が難しい断定や、名誉を傷つける表現は避けてください。</li>
-          <li>個人情報、学籍番号、連絡先などは絶対に書かないでください。</li>
+          <li>「自分はこう感じた」という体験ベースで書いてください。</li>
+          <li>授業内容、課題量、試験、出席、わかりやすさなど、履修判断に役立つ内容を優先してください。</li>
+          <li>断定的な中傷や、攻撃的な表現は避けてください。</li>
+          <li>個人を特定できる情報は書かないでください。</li>
         </ul>
       </GuideSection>
 
@@ -149,12 +149,12 @@ export default function GuidePage() {
         title="免責事項"
       >
         <p>
-          このサイトに掲載されている情報は、履修判断を助けるための参考情報です。正確性や完全性を保証するものではありません。
+          このサイトの情報は、履修判断を助けるための参考情報です。内容の完全性や最新性を常に保証するものではありません。
         </p>
         <ul className="list-disc space-y-2 pl-5">
-          <li>授業内容、担当教員、開講時期などは変更される場合があります。</li>
-          <li>口コミは投稿者個人の感想であり、運営が内容を保証するものではありません。</li>
-          <li>最終的な履修判断は、大学公式情報を確認したうえで行ってください。</li>
+          <li>授業の実施方法や評価方法は変更されることがあります。</li>
+          <li>口コミは投稿者の体験や感想を含むため、すべての人に当てはまるとは限りません。</li>
+          <li>最終的な判断は、必ず大学公式情報を確認したうえで行ってください。</li>
         </ul>
       </GuideSection>
 
@@ -164,61 +164,13 @@ export default function GuidePage() {
         title="サポート"
       >
         <p>
-          不具合、問題のある投稿、掲載内容の誤りなどがあれば、サポートページから送信できます。
+          誤りの修正依頼や、掲載内容に関する相談、問題のある口コミの報告はサポートページから送れます。
         </p>
-
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Link
-            href="/support/contact"
-            className="rounded-[24px] border border-slate-200 bg-slate-50 p-5 transition hover:bg-slate-100"
-          >
-            <div className="flex items-center gap-2 text-sm font-medium text-slate-800">
-              <MessageSquare className="h-4 w-4" />
-              お問い合わせ
-            </div>
-            <p className="mt-3 text-sm leading-7 text-slate-700">
-              サイトの使い方や不具合、要望などを送れます。
-            </p>
-            <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-slate-900">
-              ページを開く
-              <ChevronRight className="h-4 w-4" />
-            </div>
-          </Link>
-
-          <Link
-            href="/support/report"
-            className="rounded-[24px] border border-slate-200 bg-slate-50 p-5 transition hover:bg-slate-100"
-          >
-            <div className="flex items-center gap-2 text-sm font-medium text-slate-800">
-              <Flag className="h-4 w-4" />
-              問題投稿の報告
-            </div>
-            <p className="mt-3 text-sm leading-7 text-slate-700">
-              不適切な口コミや問題のある投稿を報告できます。
-            </p>
-            <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-slate-900">
-              ページを開く
-              <ChevronRight className="h-4 w-4" />
-            </div>
-          </Link>
-
-          <Link
-            href="/support/correction"
-            className="rounded-[24px] border border-slate-200 bg-slate-50 p-5 transition hover:bg-slate-100"
-          >
-            <div className="flex items-center gap-2 text-sm font-medium text-slate-800">
-              <FileText className="h-4 w-4" />
-              掲載内容の修正相談
-            </div>
-            <p className="mt-3 text-sm leading-7 text-slate-700">
-              掲載情報の誤りや修正したい内容を送れます。
-            </p>
-            <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-slate-900">
-              ページを開く
-              <ChevronRight className="h-4 w-4" />
-            </div>
-          </Link>
-        </div>
+        <ul className="list-disc space-y-2 pl-5">
+          <li>掲載内容の修正を依頼したい場合は、修正依頼フォームを使ってください。</li>
+          <li>不適切な投稿を見つけた場合は、報告フォームから知らせてください。</li>
+          <li>一般的な問い合わせはお問い合わせフォームから送れます。</li>
+        </ul>
       </GuideSection>
     </div>
   );
