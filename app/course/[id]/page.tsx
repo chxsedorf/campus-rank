@@ -1,201 +1,233 @@
 export const dynamic = 'force-dynamic';
 
-import { notFound } from 'next/navigation';
-import {
-  BarChart3,
-  FileText,
-  Info,
-  MessageSquare,
-  PencilLine,
-  Scale,
-  Users,
-  CalendarDays,
-  BookOpen,
-} from 'lucide-react';
-import { MetricCard, ReviewCard, ScoreBar, SectionHeader } from '@/components/ui';
-import { ReviewForm } from '@/components/review-form';
-import { getCourseById, getPublishedReviewsByCourseId } from '@/lib/course-service';
-import type { CourseRow, ReviewRow } from '@/lib/types';
+import Link from 'next/link';
+import { ArrowRight, BookOpen, Search, ShieldCheck } from 'lucide-react';
+import { getCourses } from '@/lib/course-service';
 
-export default async function CourseDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const courseId = Number(id);
+export default async function HomePage() {
+  const courses = await getCourses();
 
-  if (Number.isNaN(courseId)) {
-    notFound();
-  }
+  const faculties = Array.from(new Set(courses.map((course) => course.faculty))).sort((a, b) =>
+    a.localeCompare(b, 'ja')
+  );
 
-  let course: CourseRow | null = null;
-  let reviews: ReviewRow[] = [];
+  const semesters = Array.from(new Set(courses.map((course) => course.semester))).sort((a, b) =>
+    a.localeCompare(b, 'ja')
+  );
 
-  try {
-    course = await getCourseById(courseId);
-  } catch (error) {
-    console.error('getCourseById error:', error);
-    notFound();
-  }
-
-  try {
-    reviews = await getPublishedReviewsByCourseId(courseId);
-  } catch (error) {
-    console.error('getPublishedReviewsByCourseId error:', error);
-    reviews = [];
-  }
-
-  if (!course) {
-    notFound();
-  }
-
-  const hasReviews = reviews.length > 0;
-
-  const hasSyllabusUrl =
-    course.syllabus_url &&
-    course.syllabus_url !== '#' &&
-    course.syllabus_url.trim() !== '';
+  const featuredCourses = courses.slice(0, 6);
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
-      <div className="space-y-6">
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <div className="flex flex-wrap items-center gap-2">
-            {course.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
-              >
-                {tag}
-              </span>
-            ))}
+    <div className="space-y-10">
+      <section className="grid gap-6 xl:grid-cols-[1fr_420px]">
+        <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
+          <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700">
+            大学の授業選びを、もっと見やすく安全に
           </div>
 
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-            {course.name}
+          <h1 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+            履修登録の前に、
+            <br />
+            必要な情報をひと目で。
           </h1>
 
-          <div className="mt-3 flex flex-wrap gap-4 text-sm text-slate-700">
-            <span className="inline-flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              {course.teacher}
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <CalendarDays className="h-4 w-4" />
-              {course.semester} / {course.period}
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              {course.credits}単位
-            </span>
-          </div>
+          <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-700 sm:text-base">
+            Campus Rank は、公開されている授業情報を整理し、学生の感想を数値評価とともに見やすくまとめた履修支援サイトです。
+            教員個人への攻撃ではなく、授業内容・課題量・難易度・わかりやすさなど、履修判断に役立つ情報を中心に掲載します。
+          </p>
+
+          <form
+            action="/courses"
+            method="get"
+            className="mt-8 grid gap-4 lg:grid-cols-[1.8fr_1fr_1fr_auto]"
+          >
+            <div>
+              <label htmlFor="home-q" className="sr-only">
+                授業名・教員名・キーワード
+              </label>
+              <div className="flex items-center rounded-2xl border border-slate-200 bg-white px-4 py-3">
+                <Search className="h-4 w-4 text-slate-500" />
+                <input
+                  id="home-q"
+                  name="q"
+                  type="text"
+                  placeholder="授業名・教員名・キーワードで検索"
+                  className="ml-3 w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="home-faculty" className="mb-2 block text-sm font-medium text-slate-700">
+                学部
+              </label>
+              <select
+                id="home-faculty"
+                name="faculty"
+                defaultValue=""
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900"
+              >
+                <option value="">すべて</option>
+                {faculties.map((faculty) => (
+                  <option key={faculty} value={faculty}>
+                    {faculty}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="home-semester" className="mb-2 block text-sm font-medium text-slate-700">
+                学期
+              </label>
+              <select
+                id="home-semester"
+                name="semester"
+                defaultValue=""
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900"
+              >
+                <option value="">すべて</option>
+                {semesters.map((semester) => (
+                  <option key={semester} value={semester}>
+                    {semester}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-end">
+              <button
+                type="submit"
+                className="inline-flex h-[52px] w-full items-center justify-center rounded-2xl bg-slate-900 px-6 text-sm font-medium text-white transition hover:bg-slate-800"
+              >
+                授業を探す
+              </button>
+            </div>
+          </form>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            <MetricCard label="総合評価" value={hasReviews ? Number(course.rating) : null} />
-            <MetricCard label="おすすめ度" value={hasReviews ? Number(course.recommend) : null} />
-            <MetricCard label="わかりやすさ" value={hasReviews ? Number(course.clarity) : null} />
-          </div>
-        </section>
+            <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+              <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                <BookOpen className="h-4 w-4" />
+                掲載授業
+              </div>
+              <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+                {courses.length}件
+              </div>
+            </div>
 
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<BarChart3 className="h-5 w-5" />} title="数値評価サマリー" />
-          <div className="mt-6 space-y-5">
-            <ScoreBar label="わかりやすさ" value={hasReviews ? Number(course.clarity) : 0} />
-            <ScoreBar label="単位の取りやすさ" value={hasReviews ? Number(course.easiness) : 0} />
-            <ScoreBar label="課題量" value={hasReviews ? Number(course.assignments) : 0} />
-            <ScoreBar label="テスト難易度" value={hasReviews ? Number(course.difficulty) : 0} />
-            <ScoreBar label="出席の厳しさ" value={hasReviews ? Number(course.attendance) : 0} />
-          </div>
-        </section>
+            <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+              <div className="text-sm font-medium text-slate-700">口コミ</div>
+              <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+                順次追加中
+              </div>
+            </div>
 
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<MessageSquare className="h-5 w-5" />} title="感想・口コミ" />
-          <div className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm leading-7 text-sky-900">
-            感想は履修判断の参考を目的としたものです。教員や個人への攻撃、断定的な中傷表現、個人情報を含む投稿は禁止です。
+            <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+              <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                <ShieldCheck className="h-4 w-4" />
+                安全設計
+              </div>
+              <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+                ガイド付き
+              </div>
+            </div>
           </div>
+        </div>
+
+        <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <div className="text-sm text-slate-500">おすすめの使い方</div>
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">
+            このサイトでできること
+          </h2>
 
           <div className="mt-6 space-y-4">
-            {reviews.length > 0 ? (
-              reviews.map((review) => (
-                <ReviewCard
-                  key={review.id}
-                  review={{
-                    id: review.id,
-                    author: review.author,
-                    date: new Date(review.created_at).toLocaleDateString('ja-JP'),
-                    text: review.body,
-                  }}
-                />
-              ))
-            ) : (
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm text-slate-600">
-                まだ口コミがありません。
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="text-sm font-medium text-slate-800">授業を探す</div>
+              <div className="mt-2 text-sm leading-7 text-slate-700">
+                授業名・教員名・キーワードから授業を探せます。
               </div>
-            )}
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="text-sm font-medium text-slate-800">傾向を確認する</div>
+              <div className="mt-2 text-sm leading-7 text-slate-700">
+                わかりやすさ、課題量、テスト難易度、出席の厳しさなどを確認できます。
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="text-sm font-medium text-slate-800">口コミを投稿する</div>
+              <div className="mt-2 text-sm leading-7 text-slate-700">
+                履修した学生の視点から、次に取る人へ役立つ情報を残せます。
+              </div>
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<PencilLine className="h-5 w-5" />} title="口コミを投稿する" />
-          <ReviewForm courseId={courseId} />
-        </section>
-
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<Scale className="h-5 w-5" />} title="参考・免責情報" />
-          <div className="mt-5 rounded-2xl bg-slate-50 p-5 text-sm leading-7 text-slate-700">
-            このページの一部は公開されている授業情報をもとに整理しています。正式な情報は必ず大学公式のシラバス・履修要項をご確認ください。
-          </div>
-        </section>
-
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<Info className="h-5 w-5" />} title="掲載情報について" />
-          <div className="mt-5 rounded-2xl bg-slate-50 p-4 text-sm leading-7 text-slate-700">
-            このページの授業名・担当教員・開講時期・時限などは、公開されている時間割資料や公式情報をもとに整理しています。
-            年度や学期によって内容が変更される可能性があるため、履修登録前には必ず大学公式の最新シラバス・履修案内を確認してください。
-          </div>
-        </section>
-
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<FileText className="h-5 w-5" />} title="授業の概要" />
-          <p className="mt-5 text-sm leading-8 text-slate-700">{course.summary}</p>
-        </section>
-      </div>
-
-      <aside className="space-y-6">
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="text-sm font-medium text-slate-700">この授業の印象</div>
-          <div className="mt-5 space-y-3 text-sm text-slate-700">
-            <div>人気度: {hasReviews ? Number(course.recommend).toFixed(1) : '-'}</div>
-            <div>やさしさ: {hasReviews ? Number(course.easiness).toFixed(1) : '-'}</div>
+      <section className="grid gap-6 xl:grid-cols-[1fr_420px]">
+        <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <div className="flex items-end justify-between gap-4">
             <div>
-              実用性:{' '}
-              {hasReviews
-                ? ((Number(course.clarity) + Number(course.recommend)) / 2).toFixed(1)
-                : '-'}
+              <div className="text-sm text-slate-500">人気ランキング</div>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                学生がよく見る授業
+              </h2>
             </div>
-          </div>
-        </section>
 
-        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-          {hasSyllabusUrl ? (
-            <a
-              href={course.syllabus_url}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold !text-white no-underline transition hover:bg-slate-800 hover:!text-white visited:!text-white"
+            <Link
+              href="/courses"
+              className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
             >
-              公式シラバスを見る
-            </a>
-          ) : (
-            <div className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-200 px-4 py-3 text-sm font-medium text-slate-500">
-              シラバスURL準備中
-            </div>
-          )}
-        </section>
-      </aside>
+              もっと見る
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="mt-6 grid gap-4">
+            {featuredCourses.map((course) => (
+              <Link
+                key={course.id}
+                href={`/course/${course.id}`}
+                className="rounded-[24px] border border-slate-200 bg-slate-50 p-5 transition hover:border-slate-300 hover:bg-white"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <div className="text-lg font-semibold text-slate-900">{course.name}</div>
+                    <div className="mt-1 text-sm text-slate-700">
+                      {course.teacher} / {course.faculty}
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <div className="text-xs text-slate-500">おすすめ度</div>
+                    <div className="mt-1 text-lg font-semibold text-slate-900">
+                      {Number(course.recommend) > 0 ? Number(course.recommend).toFixed(1) : 'ー'}
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <div className="text-sm text-slate-500">このサイトについて</div>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+            授業選びを、少しだけ楽にする
+          </h2>
+
+          <div className="mt-5 space-y-4 text-sm leading-8 text-slate-700">
+            <p>
+              公開されている時間割情報や授業情報をもとに、履修登録前に見返しやすい形で整理しています。
+            </p>
+            <p>
+              口コミはあくまで参考情報です。最終的な判断は必ず大学公式のシラバスや履修案内を確認してください。
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
-}git add app/course/[id]/page.tsx
-git commit -m "Remove syllabus card heading"
-git push origin main
+}
