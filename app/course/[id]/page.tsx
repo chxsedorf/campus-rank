@@ -1,19 +1,19 @@
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import {
   BarChart3,
+  BookOpen,
+  CalendarDays,
   FileText,
   Info,
   MessageSquare,
   PencilLine,
   Scale,
   Users,
-  CalendarDays,
-  BookOpen,
-} from 'lucide-react';
-import { MetricCard, ReviewCard, ScoreBar, SectionHeader } from '@/components/ui';
-import { ReviewForm } from '@/components/review-form';
-import { getCourseById, getPublishedReviewsByCourseId } from '@/lib/course-service';
+} from "lucide-react";
+import { MetricCard, ReviewCard, ScoreBar, SectionHeader } from "@/components/ui";
+import { ReviewForm } from "@/components/review-form";
+import { getCourseById, getPublishedReviewsByCourseId } from "@/lib/course-service";
 
 export const dynamic = "force-dynamic";
 
@@ -47,7 +47,10 @@ export default async function CourseDetailPage({
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex flex-wrap items-center gap-2">
             {course.tags.map((tag: string) => (
-              <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+              <span
+                key={tag}
+                className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
+              >
                 {tag}
               </span>
             ))}
@@ -73,30 +76,22 @@ export default async function CourseDetailPage({
           </div>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            <MetricCard
-              label="総合評価"
-              value={hasReviews ? Number(course.rating) : null}
-            />
-            <MetricCard
-              label="おすすめ度"
-              value={hasReviews ? Number(course.recommend) : null}
-            />
-            <MetricCard
-              label="わかりやすさ"
-              value={hasReviews ? Number(course.clarity) : null}
-            />
+            <MetricCard label="総合評価" value={hasReviews ? Number(course.rating) : null} />
+            <MetricCard label="おすすめ度" value={hasReviews ? Number(course.recommend) : null} />
+            <MetricCard label="わかりやすさ" value={hasReviews ? Number(course.clarity) : null} />
           </div>
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<Info className="h-5 w-5" />} title="公式情報" />
-          <div className="mt-5 rounded-2xl bg-slate-50 p-4 text-sm leading-7 text-slate-700">
-            {course.official_note}
-          </div>
+          <SectionHeader icon={<Info className="h-5 w-5" />} title="掲載情報について" />
+          <p className="mt-5 text-sm leading-8 text-slate-700">
+            このページの授業名・担当教員・開講時期・時限などは、公開されている時間割資料や公式情報をもとに整理しています。
+            年度や学期によって内容が変更される可能性があるため、履修登録前には必ず大学公式の最新シラバス・履修案内を確認してください。
+          </p>
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<FileText className="h-5 w-5" />} title="授業概要の要約" />
+          <SectionHeader icon={<FileText className="h-5 w-5" />} title="授業の概要" />
           <p className="mt-5 text-sm leading-8 text-slate-700">
             {course.summary}
           </p>
@@ -134,7 +129,7 @@ export default async function CourseDetailPage({
                   review={{
                     id: review.id,
                     author: review.author,
-                    date: new Date(review.created_at).toLocaleDateString('ja-JP'),
+                    date: new Date(review.created_at).toLocaleDateString("ja-JP"),
                     text: review.body,
                   }}
                 />
@@ -155,7 +150,8 @@ export default async function CourseDetailPage({
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <SectionHeader icon={<Scale className="h-5 w-5" />} title="参考・免責情報" />
           <div className="mt-5 rounded-2xl bg-slate-50 p-5 text-sm leading-7 text-slate-700">
-            このページの一部は公開されている授業情報をもとに整理しています。正式な情報は必ず大学公式のシラバス・履修要項をご確認ください。
+            このページの掲載内容は、公開情報や投稿された口コミをもとに整理した参考情報です。
+            正式な授業内容、評価方法、履修条件、開講状況は、必ず大学公式のシラバス・履修要項・時間割資料をご確認ください。
           </div>
         </section>
       </div>
@@ -164,15 +160,26 @@ export default async function CourseDetailPage({
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
           <div className="text-sm font-medium text-slate-700">この授業の印象</div>
           <div className="mt-5 space-y-3 text-sm text-slate-700">
-            <div>人気度: {hasReviews ? Number(course.recommend).toFixed(1) : '-'}</div>
-            <div>やさしさ: {hasReviews ? Number(course.easiness).toFixed(1) : '-'}</div>
+            <div>人気度: {hasReviews ? Number(course.recommend).toFixed(1) : "-"}</div>
+            <div>やさしさ: {hasReviews ? Number(course.easiness).toFixed(1) : "-"}</div>
             <div>
-              実用性:{' '}
+              実用性:{" "}
               {hasReviews
                 ? ((Number(course.clarity) + Number(course.recommend)) / 2).toFixed(1)
-                : '-'}
+                : "-"}
             </div>
           </div>
+        </section>
+
+        <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="text-sm font-medium text-slate-700">公式シラバス</div>
+          <Link
+            href={course.syllabus_url || "#"}
+            target="_blank"
+            className="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
+          >
+            シラバスを確認する
+          </Link>
         </section>
       </aside>
     </div>
