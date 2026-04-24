@@ -28,13 +28,20 @@ export default async function CourseDetailPage({
   }
 
   let course;
-  let reviews;
+  let reviews = [];
 
   try {
     course = await getCourseById(courseId);
-    reviews = await getPublishedReviewsByCourseId(courseId);
-  } catch {
+  } catch (error) {
+    console.error('getCourseById error:', error);
     notFound();
+  }
+
+  try {
+    reviews = await getPublishedReviewsByCourseId(courseId);
+  } catch (error) {
+    console.error('getPublishedReviewsByCourseId error:', error);
+    reviews = [];
   }
 
   const hasReviews = reviews.length > 0;
@@ -93,7 +100,6 @@ export default async function CourseDetailPage({
             <ScoreBar label="課題量" value={hasReviews ? Number(course.assignments) : 0} />
             <ScoreBar label="テスト難易度" value={hasReviews ? Number(course.difficulty) : 0} />
             <ScoreBar label="出席の厳しさ" value={hasReviews ? Number(course.attendance) : 0} />
-            <ScoreBar label="おすすめ度" value={hasReviews ? Number(course.recommend) : 0} />
           </div>
         </section>
 
