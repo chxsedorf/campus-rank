@@ -79,3 +79,28 @@ export async function getPublishedReviewCount() {
 
   return count ?? 0;
 }
+
+export async function getPublishedReviewCountsByCourseIds(courseIds: number[]) {
+  if (courseIds.length === 0) {
+    return {} as Record<number, number>;
+  }
+
+  const { data, error } = await supabase
+    .from('reviews')
+    .select('course_id')
+    .eq('status', 'published')
+    .in('course_id', courseIds);
+
+  if (error) {
+    console.error('Supabase getPublishedReviewCountsByCourseIds error:', error);
+    throw new Error(error.message);
+  }
+
+  const counts: Record<number, number> = {};
+
+  for (const row of data ?? []) {
+    counts[row.course_id] = (counts[row.course_id] ?? 0) + 1;
+  }
+
+  return counts;
+}
