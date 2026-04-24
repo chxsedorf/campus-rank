@@ -77,19 +77,26 @@ export default async function HomePage() {
           <span className="block text-slate-700">必要な情報をひと目で。</span>
         </h1>
 
-        <p className="mt-4 max-w-3xl text-base leading-8 text-slate-700 sm:text-base sm:leading-7">
+        <p className="mt-4 max-w-3xl text-base leading-8 text-slate-700 sm:leading-7">
           Campus Rank は、公開されている授業情報を整理し、学生の感想を数値評価とともに見やすくまとめた履修支援サイトです。
           教員個人への攻撃ではなく、授業内容・課題量・難易度・わかりやすさなど、履修判断に役立つ情報を中心に掲載します。
         </p>
 
         <form
           action="/courses"
-          className="mt-8 grid gap-3 md:grid-cols-[1.3fr_0.7fr_0.7fr_auto]"
+          className="mt-8 grid gap-4 md:grid-cols-[1.5fr_0.8fr_0.8fr_auto] md:items-end"
         >
-          <SearchInput />
+          <div>
+            <label className="mb-2 block text-sm font-medium text-slate-800">
+              キーワード
+            </label>
+            <SearchInput />
+          </div>
+
           <SelectField name="faculty" options={faculties} label="学部" />
           <SelectField name="semester" options={semesters} label="学期" />
-          <button className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-slate-800">
+
+          <button className="h-[52px] rounded-2xl bg-slate-900 px-5 text-sm font-medium text-white transition hover:bg-slate-800">
             授業を探す
           </button>
         </form>
