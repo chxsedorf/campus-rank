@@ -83,17 +83,17 @@ export default async function CourseDetailPage({
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<Info className="h-5 w-5" />} title="掲載情報について" />
+          <SectionHeader icon={<FileText className="h-5 w-5" />} title="授業の概要" />
           <p className="mt-5 text-sm leading-8 text-slate-700">
-            このページの授業名・担当教員・開講時期・時限などは、公開されている時間割資料や公式情報をもとに整理しています。
-            年度や学期によって内容が変更される可能性があるため、履修登録前には必ず大学公式の最新シラバス・履修案内を確認してください。
+            {course.summary}
           </p>
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <SectionHeader icon={<FileText className="h-5 w-5" />} title="授業の概要" />
+          <SectionHeader icon={<Info className="h-5 w-5" />} title="掲載情報について" />
           <p className="mt-5 text-sm leading-8 text-slate-700">
-            {course.summary}
+            このページの授業名・担当教員・開講時期・時限などは、公開されている時間割資料や公式情報をもとに整理しています。
+            年度や学期によって内容が変更される可能性があるため、履修登録前には必ず大学公式の最新シラバス・履修案内を確認してください。
           </p>
         </section>
 
