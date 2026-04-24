@@ -15,6 +15,7 @@ import {
 import { MetricCard, ReviewCard, ScoreBar, SectionHeader } from '@/components/ui';
 import { ReviewForm } from '@/components/review-form';
 import { getCourseById, getPublishedReviewsByCourseId } from '@/lib/course-service';
+import type { CourseRow, ReviewRow } from '@/lib/types';
 
 export default async function CourseDetailPage({
   params,
@@ -27,8 +28,8 @@ export default async function CourseDetailPage({
     notFound();
   }
 
-  let course;
-  let reviews = [];
+  let course: CourseRow | null = null;
+  let reviews: ReviewRow[] = [];
 
   try {
     course = await getCourseById(courseId);
@@ -44,6 +45,10 @@ export default async function CourseDetailPage({
     reviews = [];
   }
 
+  if (!course) {
+    notFound();
+  }
+
   const hasReviews = reviews.length > 0;
 
   const hasSyllabusUrl =
@@ -56,7 +61,7 @@ export default async function CourseDetailPage({
       <div className="space-y-6">
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex flex-wrap items-center gap-2">
-            {course.tags.map((tag: string) => (
+            {course.tags.map((tag) => (
               <span
                 key={tag}
                 className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
@@ -111,7 +116,7 @@ export default async function CourseDetailPage({
 
           <div className="mt-6 space-y-4">
             {reviews.length > 0 ? (
-              reviews.map((review: any) => (
+              reviews.map((review) => (
                 <ReviewCard
                   key={review.id}
                   review={{
