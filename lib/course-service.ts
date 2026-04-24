@@ -65,3 +65,17 @@ export async function getPublishedReviewsByCourseId(courseId: number) {
 
   return (data ?? []) as ReviewRow[];
 }
+
+export async function getPublishedReviewCount() {
+  const { count, error } = await supabase
+    .from('reviews')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'published');
+
+  if (error) {
+    console.error('Supabase getPublishedReviewCount error:', error);
+    throw new Error(error.message);
+  }
+
+  return count ?? 0;
+}
