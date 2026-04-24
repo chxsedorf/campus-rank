@@ -10,12 +10,12 @@ export default async function HomePage() {
   const faculties = Array.from(new Set(courses.map((course) => course.faculty))).sort((a, b) =>
     a.localeCompare(b, 'ja')
   );
+
   const semesters = Array.from(new Set(courses.map((course) => course.semester))).sort((a, b) =>
     a.localeCompare(b, 'ja')
   );
 
   const featuredCourses = courses.slice(0, 6);
-  const publishedLikeCount = featuredCourses.filter((course) => Number(course.recommend) > 0).length;
 
   return (
     <div className="space-y-10">
@@ -119,7 +119,7 @@ export default async function HomePage() {
             <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
               <div className="text-sm font-medium text-slate-700">口コミ</div>
               <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
-                {publishedLikeCount}件
+                順次追加中
               </div>
             </div>
 
