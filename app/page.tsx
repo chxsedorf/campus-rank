@@ -19,23 +19,29 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-10">
-      <section className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
-        <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700">
-          Campus Rank
+      <section className="relative overflow-hidden rounded-[36px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(15,23,42,0.06),transparent_35%)]" />
+
+        <div className="relative">
+          <div className="inline-flex items-center rounded-full border border-slate-200 bg-white/90 px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] text-slate-500 shadow-sm">
+            CAMPUS RANK
+          </div>
+
+          <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-5xl lg:text-6xl">
+            <span className="bg-gradient-to-r from-slate-950 via-slate-800 to-slate-600 bg-clip-text text-transparent">
+              授業選びを、もっとクリアに。
+            </span>
+          </h1>
+
+          <p className="mt-6 max-w-2xl text-base font-medium leading-8 tracking-[-0.01em] text-slate-600 sm:text-lg">
+            必要な授業情報を、ひと目で。
+          </p>
         </div>
-
-        <h1 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-          授業選びを、もっとクリアに。
-        </h1>
-
-        <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-700 sm:text-base">
-          必要な授業情報を、ひと目で。
-        </p>
 
         <form
           action="/courses"
           method="get"
-          className="mt-8 grid gap-4 lg:grid-cols-[1.8fr_1fr_1fr_auto] lg:items-end"
+          className="relative mt-8 grid gap-4 lg:grid-cols-[1.8fr_1fr_1fr_auto] lg:items-end"
         >
           <div>
             <label htmlFor="home-q" className="mb-2 block text-sm font-medium text-slate-700">
@@ -101,7 +107,7 @@ export default async function HomePage() {
           </div>
         </form>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <div className="relative mt-8 grid gap-4 sm:grid-cols-2">
           <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
             <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
               <BookOpen className="h-4 w-4" />
