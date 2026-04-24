@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-import ...
 import { CourseCard, SearchInput, SelectField } from '@/components/ui';
 import { getCourses } from '@/lib/course-service';
 import type { Course } from '@/lib/data';
@@ -28,6 +26,8 @@ function toCourse(row: any): Course {
     reviews: [],
   };
 }
+
+export const dynamic = "force-dynamic";
 
 export default async function CoursesPage({
   searchParams,

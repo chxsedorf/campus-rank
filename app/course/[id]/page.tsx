@@ -1,6 +1,3 @@
-export const dynamic = 'force-dynamic';
-
-import ...
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
@@ -17,6 +14,8 @@ import {
 import { MetricCard, ReviewCard, ScoreBar, SectionHeader } from '@/components/ui';
 import { ReviewForm } from '@/components/review-form';
 import { getCourseById, getPublishedReviewsByCourseId } from '@/lib/course-service';
+
+export const dynamic = "force-dynamic";
 
 export default async function CourseDetailPage({
   params,
