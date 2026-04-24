@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { createReview } from '@/app/course/[id]/actions';
 
 type SliderFieldProps = {
@@ -100,11 +100,11 @@ export function ReviewForm({ courseId }: { courseId: number }) {
   const [difficultyUi, setDifficultyUi] = useState(50);
   const [attendanceUi, setAttendanceUi] = useState(50);
 
-  const recommend = useMemo(() => toFiveScale(recommendUi), [recommendUi]);
-  const clarity = useMemo(() => toFiveScale(clarityUi), [clarityUi]);
-  const assignments = useMemo(() => toFiveScale(assignmentsUi), [assignmentsUi]);
-  const difficulty = useMemo(() => toFiveScale(difficultyUi), [difficultyUi]);
-  const attendance = useMemo(() => toFiveScale(attendanceUi), [attendanceUi]);
+  const recommend = toFiveScale(recommendUi);
+  const clarity = toFiveScale(clarityUi);
+  const assignments = toFiveScale(assignmentsUi);
+  const difficulty = toFiveScale(difficultyUi);
+  const attendance = toFiveScale(attendanceUi);
 
   return (
     <form
@@ -135,12 +135,6 @@ export function ReviewForm({ courseId }: { courseId: number }) {
             className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900"
           />
         </Field>
-
-        <div className="rounded-2xl border border-slate-200 bg-white p-4">
-          <div className="text-sm font-medium text-slate-800">おすすめ度</div>
-          <div className="mt-2 text-sm text-slate-700">{getRecommendText(recommendUi)}</div>
-          <div className="mt-2 text-xs text-slate-500">内部保存: {recommend} / 5</div>
-        </div>
       </div>
 
       <div className="mt-4 grid gap-4">
@@ -151,7 +145,6 @@ export function ReviewForm({ courseId }: { courseId: number }) {
           value={recommendUi}
           onChange={setRecommendUi}
         />
-
         <div className="px-1 text-sm text-slate-700">{getRecommendText(recommendUi)}</div>
 
         <SliderField
@@ -161,7 +154,6 @@ export function ReviewForm({ courseId }: { courseId: number }) {
           value={clarityUi}
           onChange={setClarityUi}
         />
-
         <div className="px-1 text-sm text-slate-700">{getClarityText(clarityUi)}</div>
 
         <SliderField
@@ -171,7 +163,6 @@ export function ReviewForm({ courseId }: { courseId: number }) {
           value={assignmentsUi}
           onChange={setAssignmentsUi}
         />
-
         <div className="px-1 text-sm text-slate-700">{getAssignmentsText(assignmentsUi)}</div>
 
         <SliderField
@@ -181,7 +172,6 @@ export function ReviewForm({ courseId }: { courseId: number }) {
           value={difficultyUi}
           onChange={setDifficultyUi}
         />
-
         <div className="px-1 text-sm text-slate-700">{getDifficultyText(difficultyUi)}</div>
 
         <SliderField
@@ -191,7 +181,6 @@ export function ReviewForm({ courseId }: { courseId: number }) {
           value={attendanceUi}
           onChange={setAttendanceUi}
         />
-
         <div className="px-1 text-sm text-slate-700">{getAttendanceText(attendanceUi)}</div>
       </div>
 
