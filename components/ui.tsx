@@ -18,12 +18,12 @@ export function SearchInput({
 }) {
   return (
     <div className="relative">
-      <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 sm:text-slate-400" />
+      <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
       <input
         name={name}
         defaultValue={defaultValue}
         placeholder="授業名・教員名・キーワードで検索"
-        className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-600 focus:border-slate-300 sm:placeholder:text-slate-400"
+        className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-600 focus:border-slate-300"
       />
     </div>
   );
@@ -42,13 +42,13 @@ export function SelectField({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-slate-800 sm:text-slate-700">
+      <label className="mb-2 block text-sm font-medium text-slate-800">
         {label}
       </label>
       <select
         name={name}
         defaultValue={defaultValue}
-        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-300 sm:text-slate-700"
+        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-300"
       >
         {options.map((option) => (
           <option key={option} value={option}>
@@ -72,12 +72,10 @@ export function StatCard({
   return (
     <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
       <div className="flex items-center gap-3">
-        <div className="text-slate-700 sm:text-slate-500">{icon}</div>
-        <div className="text-sm font-medium text-slate-800 sm:text-slate-600">
-          {label}
-        </div>
+        <div className="text-slate-700">{icon}</div>
+        <div className="text-sm font-medium text-slate-800">{label}</div>
       </div>
-      <div className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-slate-100?">
+      <div className="mt-4 text-3xl font-semibold tracking-tight text-slate-900">
         {value}
       </div>
     </div>
@@ -95,13 +93,13 @@ export function FeatureMiniCard({
 }) {
   return (
     <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-6">
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-700 shadow-sm sm:text-slate-500">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-700 shadow-sm">
         {icon}
       </div>
       <h4 className="mt-6 text-xl font-semibold tracking-tight text-slate-900">
         {title}
       </h4>
-      <p className="mt-4 text-base leading-8 text-slate-700 sm:text-sm sm:leading-7 sm:text-slate-600">
+      <p className="mt-4 text-base leading-8 text-slate-700 sm:text-sm sm:leading-7">
         {text}
       </p>
     </div>
@@ -116,7 +114,7 @@ export function CourseCard({ course }: { course: Course }) {
           {course.tags?.slice(0, 5).map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 sm:text-slate-600"
+              className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
             >
               {tag}
             </span>
@@ -133,17 +131,17 @@ export function CourseCard({ course }: { course: Course }) {
         {course.name}
       </h3>
 
-      <p className="mt-3 text-base leading-8 text-slate-700 sm:text-sm sm:leading-7 sm:text-slate-600">
+      <p className="mt-3 text-base leading-8 text-slate-700 sm:text-sm sm:leading-7">
         {course.teacher} / {course.faculty}
       </p>
 
-      <p className="mt-6 text-base leading-8 text-slate-700 sm:text-sm sm:leading-8 sm:text-slate-600">
+      <p className="mt-6 text-base leading-8 text-slate-700 sm:text-sm sm:leading-8">
         {course.summary}
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-3">
         <div className="rounded-2xl bg-slate-50 p-4">
-          <div className="flex items-center gap-2 text-slate-700 sm:text-slate-500">
+          <div className="flex items-center gap-2 text-slate-700">
             <CalendarDays className="h-4 w-4" />
             <span className="text-base sm:text-sm">
               {course.semester} / {course.period}
@@ -152,14 +150,14 @@ export function CourseCard({ course }: { course: Course }) {
         </div>
 
         <div className="rounded-2xl bg-slate-50 p-4">
-          <div className="flex items-center gap-2 text-slate-700 sm:text-slate-500">
+          <div className="flex items-center gap-2 text-slate-700">
             <BookOpen className="h-4 w-4" />
             <span className="text-base sm:text-sm">{course.credits}単位</span>
           </div>
         </div>
 
         <div className="rounded-2xl bg-slate-50 p-4">
-          <div className="text-base text-slate-700 sm:text-sm sm:text-slate-500">
+          <div className="text-base text-slate-700 sm:text-sm">
             おすすめ{' '}
             <span className="font-semibold text-slate-900">
               {Number(course.recommend).toFixed(1)}
@@ -168,7 +166,7 @@ export function CourseCard({ course }: { course: Course }) {
         </div>
 
         <div className="rounded-2xl bg-slate-50 p-4">
-          <div className="text-base text-slate-700 sm:text-sm sm:text-slate-500">
+          <div className="text-base text-slate-700 sm:text-sm">
             課題量{' '}
             <span className="font-semibold text-slate-900">
               {Number(course.assignments).toFixed(1)}
@@ -212,13 +210,13 @@ export function RankingListItem({
         <div className="truncate text-lg font-semibold text-slate-900 sm:text-base">
           {course.name}
         </div>
-        <div className="mt-1 truncate text-base text-slate-700 sm:text-sm sm:text-slate-600">
+        <div className="mt-1 truncate text-base text-slate-700 sm:text-sm">
           {course.teacher} / {course.faculty}
         </div>
       </div>
 
       <div className="text-right">
-        <div className="text-sm text-slate-700 sm:text-xs sm:text-slate-500">
+        <div className="text-sm text-slate-700 sm:text-xs">
           {rankingLabel}
         </div>
         <div className="mt-1 text-lg font-semibold text-slate-900 sm:text-base">
@@ -238,7 +236,7 @@ export function MetricCard({
 }) {
   return (
     <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
-      <div className="text-sm font-medium text-slate-800 sm:text-slate-600">
+      <div className="text-sm font-medium text-slate-800">
         {label}
       </div>
       <div className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
@@ -261,10 +259,10 @@ export function ScoreBar({
   return (
     <div>
       <div className="mb-2 flex items-center justify-between gap-4">
-        <span className="text-base font-medium text-slate-800 sm:text-sm sm:text-slate-700">
+        <span className="text-base font-medium text-slate-800 sm:text-sm">
           {label}
         </span>
-        <span className="text-base text-slate-700 sm:text-sm sm:text-slate-500">
+        <span className="text-base text-slate-700 sm:text-sm">
           {value === null ? '-' : `${safeValue.toFixed(1)} / 5.0`}
         </span>
       </div>
@@ -287,7 +285,7 @@ export function SectionHeader({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 sm:text-slate-500">
+      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
         {icon}
       </div>
       <h2 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-xl">
@@ -313,11 +311,11 @@ export function ReviewCard({
         <div className="text-base font-semibold text-slate-900 sm:text-sm">
           {review.author}
         </div>
-        <div className="text-sm text-slate-700 sm:text-xs sm:text-slate-500">
+        <div className="text-sm text-slate-700 sm:text-xs">
           {review.date}
         </div>
       </div>
-      <p className="mt-4 text-base leading-8 text-slate-700 sm:text-sm sm:leading-7 sm:text-slate-600">
+      <p className="mt-4 text-base leading-8 text-slate-700 sm:text-sm sm:leading-7">
         {review.text}
       </p>
     </article>

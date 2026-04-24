@@ -69,19 +69,17 @@ export default async function HomePage() {
     <div className="space-y-8">
       <section className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
         <div className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-sm sm:p-10">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 sm:text-slate-600">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
             <Sparkles className="h-3.5 w-3.5" />
             大学の授業選びを、もっと見やすく安全に
           </div>
 
           <h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
             履修登録の前に、
-            <span className="block text-slate-700 sm:text-slate-500">
-              必要な情報をひと目で。
-            </span>
+            <span className="block text-slate-700">必要な情報をひと目で。</span>
           </h1>
 
-          <p className="mt-4 max-w-2xl text-sm leading-8 text-slate-700 sm:text-base sm:leading-7 sm:text-slate-600">
+          <p className="mt-4 max-w-2xl text-base leading-8 text-slate-700 sm:text-base sm:leading-7">
             Campus Rank は、公開されている授業情報を整理し、学生の感想を数値評価とともに見やすくまとめた履修支援サイトです。
             教員個人への攻撃ではなく、授業内容・課題量・難易度・わかりやすさなど、履修判断に役立つ情報を中心に掲載します。
           </p>
@@ -118,7 +116,7 @@ export default async function HomePage() {
         </div>
 
         <div className="rounded-[28px] border border-slate-200 bg-gradient-to-br from-slate-900 to-slate-800 p-7 text-white shadow-sm sm:p-8">
-          <div className="flex items-center gap-2 text-sm text-slate-100 sm:text-slate-300">
+          <div className="flex items-center gap-2 text-sm text-slate-200">
             <ShieldCheck className="h-4 w-4" />
             履修前に、知りたいことをすぐ確認
           </div>
@@ -127,7 +125,7 @@ export default async function HomePage() {
             授業選びで迷わないための情報を、まとめて見られる。
           </h2>
 
-          <ul className="mt-6 space-y-3 text-sm leading-7 text-slate-100 sm:text-slate-300">
+          <ul className="mt-6 space-y-3 text-sm leading-7 text-slate-100">
             {[
               '授業の特徴、口コミ、課題や難しさの傾向をひと目で確認できます',
               '気になる授業を比較しながら、自分に合う履修を選びやすくします',
@@ -146,9 +144,7 @@ export default async function HomePage() {
         <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <div className="text-sm font-medium text-slate-700 sm:text-slate-500">
-                人気ランキング
-              </div>
+              <div className="text-sm font-medium text-slate-700">人気ランキング</div>
               <h3 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">
                 学生がよく見る授業
               </h3>
@@ -156,7 +152,7 @@ export default async function HomePage() {
 
             <Link
               href="/rankings"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-50 sm:text-slate-700"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-50"
             >
               もっと見る
               <ChevronRight className="h-4 w-4" />
@@ -164,7 +160,7 @@ export default async function HomePage() {
           </div>
 
           {rankedCourses.length === 0 ? (
-            <div className="mt-6 rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-700 sm:text-slate-600">
+            <div className="mt-6 rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-700">
               まだ授業データがありません。
             </div>
           ) : (
@@ -184,9 +180,7 @@ export default async function HomePage() {
 
         <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <div>
-            <div className="text-sm font-medium text-slate-700 sm:text-slate-500">
-              おすすめの使い方
-            </div>
+            <div className="text-sm font-medium text-slate-700">おすすめの使い方</div>
             <h3 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">
               このサイトでできること
             </h3>
@@ -220,9 +214,7 @@ export default async function HomePage() {
       <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="text-sm font-medium text-slate-700 sm:text-slate-500">
-              注目授業
-            </div>
+            <div className="text-sm font-medium text-slate-700">注目授業</div>
             <h3 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">
               いま見つかる授業
             </h3>
@@ -230,7 +222,7 @@ export default async function HomePage() {
         </div>
 
         {courses.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-700 sm:text-slate-600">
+          <div className="mt-6 rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-700">
             まだ授業データがありません。
           </div>
         ) : (

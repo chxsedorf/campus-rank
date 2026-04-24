@@ -21,7 +21,7 @@ export function Header() {
             <div className="truncate text-lg font-semibold text-slate-900">
               Campus Rank
             </div>
-            <p className="truncate text-sm text-slate-700 sm:text-slate-600">
+            <p className="truncate text-sm text-slate-700">
               履修判断を助ける授業情報サイト
             </p>
           </div>
@@ -32,7 +32,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-slate-800 transition hover:text-slate-900 sm:text-slate-700"
+              className="text-sm font-medium text-slate-800 transition hover:text-slate-900"
             >
               {item.label}
             </Link>
@@ -41,11 +41,11 @@ export function Header() {
 
         <div className="ml-auto hidden w-full max-w-sm lg:block">
           <form action="/courses" className="relative">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 sm:text-slate-400" />
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
             <input
               name="q"
               placeholder="授業名・教員名・キーワードで検索"
-              className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-600 focus:border-slate-300 sm:placeholder:text-slate-400"
+              className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-600 focus:border-slate-300"
             />
           </form>
         </div>

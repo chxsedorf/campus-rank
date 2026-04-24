@@ -10,17 +10,9 @@ import {
   CalendarDays,
   BookOpen,
 } from 'lucide-react';
-import {
-  MetricCard,
-  ReviewCard,
-  ScoreBar,
-  SectionHeader,
-} from '@/components/ui';
+import { MetricCard, ReviewCard, ScoreBar, SectionHeader } from '@/components/ui';
 import { ReviewForm } from '@/components/review-form';
-import {
-  getCourseById,
-  getPublishedReviewsByCourseId,
-} from '@/lib/course-service';
+import { getCourseById, getPublishedReviewsByCourseId } from '@/lib/course-service';
 
 export default async function CourseDetailPage({
   params,
@@ -51,21 +43,21 @@ export default async function CourseDetailPage({
       <div className="space-y-6">
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex flex-wrap items-center gap-2">
-            {course.tags.map((tag: string) => (
+            {(course.tags ?? []).map((tag: string) => (
               <span
                 key={tag}
-                className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"
+                className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
               >
                 {tag}
               </span>
             ))}
           </div>
 
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
             {course.name}
           </h1>
 
-          <div className="mt-3 flex flex-wrap gap-4 text-sm text-slate-600">
+          <div className="mt-3 flex flex-wrap gap-4 text-sm text-slate-700">
             <span className="inline-flex items-center gap-2">
               <Users className="h-4 w-4" />
               {course.teacher}
@@ -94,61 +86,38 @@ export default async function CourseDetailPage({
               value={hasReviews ? Number(course.clarity) : null}
             />
           </div>
-
-          {!hasReviews ? (
-            <p className="mt-4 text-sm text-slate-500">評価がまだありません。</p>
-          ) : null}
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <SectionHeader icon={<Info className="h-5 w-5" />} title="公式情報" />
-          <div className="mt-5 rounded-2xl bg-slate-50 p-4 text-sm leading-7 text-slate-600">
+          <div className="mt-5 rounded-2xl bg-slate-50 p-4 text-sm leading-7 text-slate-700">
             {course.official_note}
           </div>
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <SectionHeader icon={<FileText className="h-5 w-5" />} title="授業概要の要約" />
-          <p className="mt-5 text-sm leading-8 text-slate-700">{course.summary}</p>
+          <p className="mt-5 text-sm leading-8 text-slate-700">
+            {course.summary}
+          </p>
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <SectionHeader icon={<BarChart3 className="h-5 w-5" />} title="数値評価サマリー" />
-
           <div className="mt-6 space-y-5">
-            <ScoreBar
-              label="わかりやすさ"
-              value={hasReviews ? Number(course.clarity) : null}
-            />
-            <ScoreBar
-              label="単位の取りやすさ"
-              value={hasReviews ? Number(course.easiness) : null}
-            />
-            <ScoreBar
-              label="課題量"
-              value={hasReviews ? Number(course.assignments) : null}
-            />
-            <ScoreBar
-              label="テスト難易度"
-              value={hasReviews ? Number(course.difficulty) : null}
-            />
-            <ScoreBar
-              label="出席の厳しさ"
-              value={hasReviews ? Number(course.attendance) : null}
-            />
-            <ScoreBar
-              label="おすすめ度"
-              value={hasReviews ? Number(course.recommend) : null}
-            />
+            <ScoreBar label="わかりやすさ" value={hasReviews ? Number(course.clarity) : null} />
+            <ScoreBar label="単位の取りやすさ" value={hasReviews ? Number(course.easiness) : null} />
+            <ScoreBar label="課題量" value={hasReviews ? Number(course.assignments) : null} />
+            <ScoreBar label="テスト難易度" value={hasReviews ? Number(course.difficulty) : null} />
+            <ScoreBar label="出席の厳しさ" value={hasReviews ? Number(course.attendance) : null} />
+            <ScoreBar label="おすすめ度" value={hasReviews ? Number(course.recommend) : null} />
           </div>
 
           {!hasReviews ? (
-            <p className="mt-5 text-sm text-slate-500">評価がまだありません。</p>
-          ) : (
-            <div className="mt-5 text-xs leading-6 text-slate-500">
-              ※ いずれも履修判断を助けるための参考値です。人格評価ではなく、授業内容に関係する評価軸のみを採用しています。
-            </div>
-          )}
+            <p className="mt-6 text-sm text-slate-700">
+              評価がまだありません。
+            </p>
+          ) : null}
         </section>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
@@ -171,8 +140,8 @@ export default async function CourseDetailPage({
                 />
               ))
             ) : (
-              <div className="rounded-2xl border border-slate-200 p-5 text-sm text-slate-600">
-                まだ口コミはありません。
+              <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+                <p className="text-sm text-slate-700">まだ口コミはありません。</p>
               </div>
             )}
           </div>
@@ -185,7 +154,7 @@ export default async function CourseDetailPage({
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <SectionHeader icon={<Scale className="h-5 w-5" />} title="参考・免責情報" />
-          <div className="mt-5 rounded-2xl bg-slate-50 p-5 text-sm leading-7 text-slate-600">
+          <div className="mt-5 rounded-2xl bg-slate-50 p-5 text-sm leading-7 text-slate-700">
             このページの一部は公開されている授業情報をもとに整理しています。正式な情報は必ず大学公式のシラバス・履修要項をご確認ください。
           </div>
         </section>
@@ -193,19 +162,17 @@ export default async function CourseDetailPage({
 
       <aside className="space-y-6">
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="text-sm font-medium text-slate-500">この授業の印象</div>
-
-          {hasReviews ? (
-            <div className="mt-5 space-y-3 text-sm text-slate-700">
-              <div>人気度: {Number(course.recommend).toFixed(1)}</div>
-              <div>やさしさ: {Number(course.easiness).toFixed(1)}</div>
-              <div>
-                実用性: {((Number(course.clarity) + Number(course.recommend)) / 2).toFixed(1)}
-              </div>
+          <div className="text-sm font-medium text-slate-700">この授業の印象</div>
+          <div className="mt-5 space-y-3 text-sm text-slate-700">
+            <div>人気度: {hasReviews ? Number(course.recommend).toFixed(1) : '-'}</div>
+            <div>やさしさ: {hasReviews ? Number(course.easiness).toFixed(1) : '-'}</div>
+            <div>
+              実用性:{' '}
+              {hasReviews
+                ? ((Number(course.clarity) + Number(course.recommend)) / 2).toFixed(1)
+                : '-'}
             </div>
-          ) : (
-            <div className="mt-5 text-sm text-slate-500">評価がまだありません。</div>
-          )}
+          </div>
         </section>
       </aside>
     </div>
