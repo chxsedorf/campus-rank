@@ -20,9 +20,10 @@ import type { CourseRow, ReviewRow } from '@/lib/types';
 export default async function CourseDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const courseId = Number(params.id);
+  const { id } = await params;
+  const courseId = Number(id);
 
   if (Number.isNaN(courseId)) {
     notFound();
