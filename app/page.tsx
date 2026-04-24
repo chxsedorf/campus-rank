@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import Link from 'next/link';
-import { ArrowRight, BookOpen, MessageSquare, Search, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BookOpen, MessageSquare, Search } from 'lucide-react';
 import { getCourses } from '@/lib/course-service';
 
 export default async function HomePage() {
@@ -102,7 +102,7 @@ export default async function HomePage() {
           </div>
         </form>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
             <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
               <BookOpen className="h-4 w-4" />
@@ -119,14 +119,6 @@ export default async function HomePage() {
               公開口コミ数
             </div>
             <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">0</div>
-          </div>
-
-          <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
-            <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
-              <ShieldCheck className="h-4 w-4" />
-              対応状況
-            </div>
-            <div className="mt-3 text-base font-medium text-slate-900">学部別に順次拡張中</div>
           </div>
         </div>
       </section>
